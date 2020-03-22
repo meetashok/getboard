@@ -4,3 +4,5 @@ notebooks/.ipynb_checkpoints/*
 **/.ipynb_checkpoints/*
 data/usernames.csv
 data/usernames.zip
+data/*
+models/*

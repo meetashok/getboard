@@ -46,7 +46,7 @@ def get_userinfo(div):
 
 
 if __name__ == "__main__":
-    filename = "../data/uszips.csv"
+    filename = "../../data/uszips.csv"
 
     MIN_TIME = 1
     MAX_TIME = 3
@@ -67,13 +67,13 @@ for i, zipcode in enumerate(zipcodes[30:33]):
     if response.ok:
         html_soup = BeautifulSoup(response.text, 'html.parser')
         user_divs = html_soup.find_all("div", class_="avatarblock")
-        with open("../data/usernames_download.csv", "a+") as f:
+        with open("../../data/usernames_download.csv", "a+") as f:
             record = f"{timenow},{zipcode},{MAXDIST},{len(user_divs)}\n"
             f.write(record)
         if len(user_divs) > 0:
             for div in user_divs:
                 urlusername, username, userid, name = get_userinfo(div)
-                with open("../data/usernames.csv", "a+") as f:
+                with open("../../data/usernames.csv", "a+") as f:
                     record = f"{zipcode},{MAXDIST},{urlusername},{username},{userid},{name}\n"
                     f.write(record)
     

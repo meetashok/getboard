@@ -65,7 +65,7 @@ if __name__ == "__main__":
         if len(rows) > 0:
             for row in rows:
                 rank, gameid, releaseyear, geekrating, userrating, numvotes, gamename = boardgameinfo(row)
-                with open("../data/boardgames.csv", "a+") as f:
+                with open("../../data/boardgames.csv", "a+") as f:
                     record = f"{rank},{gameid},{releaseyear},{geekrating},{userrating},{numvotes},'{gamename}'\n"
                     f.write(record)
 
