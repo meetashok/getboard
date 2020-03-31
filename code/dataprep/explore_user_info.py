@@ -42,7 +42,7 @@ def displayuserstats(data, type="overall"):
     ax.set_ylabel("Cumulative proportion of users")
     formatter = mpl.ticker.FuncFormatter(lambda y, _: '{:.0%}'.format(y))
     ax.yaxis.set_major_formatter(formatter)
-    ax.set_title(f"For {typeof} games")
+    ax.set_title(f"For {type} games")
 
     plt.show()
 
@@ -139,10 +139,10 @@ if __name__ == "__main__":
     displayuserstats(userinfo, type="rated")
 
     print("-----Printing games status-----")
-    displaygamestats(userinfo, type="overall")
+    displaygamestats(userinfo, typeof="overall")
 
     print("-----Printing games stats for rated games-----")
-    displaygamestats(userinfo, type="rated")
+    displaygamestats(userinfo, typeof="rated")
 
     print("-----Distribution of ratings-----")
     ratingDistribution(userinfo)
