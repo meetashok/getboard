@@ -1,13 +1,12 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="container">
-  <h1 class="display-4">{{ username }}</h1>
 <div class="alert alert-info" role="alert">
-  Current games
+  Current games for {{ username }}
 </div>
+
   <div class="row">
-        
-    {% for game in topgames[:12] %}
+    {% for game in topgames[:6] %}
     <div class="col-sm-2">
       <div class="card">
         <img src="{{ game.thumbnail }}" class="img-thumbnail rounded" alt="...">
@@ -26,10 +25,10 @@
   </div>
 
   <div class="alert alert-info" role="alert">
-    Recommendations
+    Recommendations for {{ username }}
   </div>
   <div class="row">
-    {% for game in recos %}
+    {% for game in recos[:6] %}
     <div class="col-sm-2">
       <div class="card">
         <img src="{{ game.thumbnail }}" class="img-thumbnail rounded" alt="...">
@@ -38,7 +37,6 @@
             <h6 class="card-title">{{ game.primaryname }}</h5>
             <!-- <li class="list-group-item">{{ game[2] }}</li> -->
             <li class="list-group-item">{{ game.yearpublished }}
-              <span class="badge badge-primary badge-pill">{{ game.rank }}</span>
             </li>
           </ul>
         </div>
