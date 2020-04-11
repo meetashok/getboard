@@ -2,6 +2,17 @@ import psycopg2
 import requests
 import xml.etree.ElementTree as ET
 
+def makedict(rows, names):
+    return [dict(zip(names, row)) for row in rows]
+
+class RecommendationEngine(object):
+    def __init__(self, model):
+        self.model = model
+    
+    def recommendations(self, username, k):
+        games = self.model.recommend(users=[username], k=k)
+        return list(games["gameid"]), list(games["rank"])
+
 class BGGAPI(object):
     base_url = "https://www.boardgamegeek.com"
     collections_url = "/xmlapi2/collection?username="
@@ -27,9 +38,12 @@ class BGGAPI(object):
             for item in items:
                 userinfo.append(self._item_info(item))
         
-        return sorted(userinfo, key=lambda x: x[1])[::-1]
+        s = sorted(userinfo, key=lambda x: x[1])[::-1]
 
-    def get_userinfo(self, username):
+        names = ["gameid", "userrating", "primaryname", "yearpublished", "thumbnail"]
+        return makedict(s, names)
+
+    def get_usergames(self, username):
         url = f"{self.base_url}{self.collections_url}{username}"
         url += "&excludesubtype=boardgameexpansion&stats=1"
         response = requests.get(url)
@@ -73,7 +87,27 @@ class Database(object):
         rows = self.conn.fetchall()
         return rows
 
-    def get_topgames(self, username):
+    def games_info(self, gameids):
+        gameids_string = ",".join([str(gameid) for gameid in gameids])
+        query = f"""select 
+                gameid, primaryname, yearpublished, gamerank,
+                usersrated, bayesaverage, minplayers, maxplayers,
+                playingtime, minplaytime, maxplaytime, thumbnail
+                from getboard.gamesinfo
+                where gameid in ({gameids_string});"""
+
+        self.conn.execute(query)
+        rows = self.conn.fetchall()
+
+        names = [
+            "gameid", "primaryname", "yearpublished", 
+            "gamerank", "usersrated", "bayesaverage",
+            "minplayers", "maxplayers", "playingtime",
+            "minplaytime", "maxplaytime", "thumbnail"]
+
+        return makedict(rows, names)
+
+    def get_usergames(self, username):
         query = f"""select getboard.userinfo.gameid, 
             case when userrating is null then 0 else userrating end as userrating, 
             primaryname, yearpublished, thumbnail
@@ -85,7 +119,9 @@ class Database(object):
         """
         self.conn.execute(query)
         rows = self.conn.fetchall()
-        return rows
+
+        names = ["gameid", "userrating", "primaryname", "yearpublished", "thumbnail"]
+        return makedict(rows, names)
 
 if __name__ == "__main__":
     db = Database("ashok", "ashok", "localhost")

@@ -1,12 +1,16 @@
 from flask import Flask, render_template, redirect, url_for, request
 
+import turicreate as tc
 import sys
 import datetime
 
-from helper import Database, BGGAPI
+from helper import Database, BGGAPI, RecommendationEngine
+
+model = tc.load_model("../models/itemsimilarity_2020-03-15")
 
 db, dbuser, dbhost = "ashok", "ashok", "localhost"
 database = Database(db, dbuser, dbhost)
+engine = RecommendationEngine(model)
 
 api = BGGAPI()
 
@@ -19,13 +23,37 @@ def index():
 
 @app.route('/user/<string:username>', methods=["GET"])
 def username(username):
-    topgames = database.get_topgames(username)
-    print(topgames)
-    if len(topgames) == 0:
-        topgames = api.get_userinfo(username)
+    usergames = database.get_usergames(username)
+    
+    if len(usergames) > 0:
+        user_found = True #user found in our internal database
+    else:
+        user_found = False #user not found in our internal database 
+        usergames = api.get_usergames(username) #games for user downloaded from API
 
-    print(topgames)
-    return render_template("username.html", username=username, topgames=topgames)
+    if user_found:
+        gameids, ranks = engine.recommendations(username, 10)
+        gameinfo = database.games_info(gameids)
+
+        recos = []
+        
+        for game in gameinfo:
+            game["rank"] = ranks[gameids.index(game["gameid"])]
+            recos.append(game)
+
+    print(recos)
+
+    return render_template("username.html", 
+            username=username, 
+            topgames=usergames,
+            recos=recos)
+
+@app.route("/user/<string:username>/recommendations")
+
+@app.route('/boardgame/<int:gameid>', methods=["GET"])
+def boardgame(gameid):
+    print(gameid)
+    return render_template("boardgame.html")
 
 
 if __name__ == "__main__":

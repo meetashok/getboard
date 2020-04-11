@@ -1,19 +1,22 @@
 {% extends "base.html" %}
 {% block content %}
-<p>{{ username }}</p>
 <div class="container">
+  <h1 class="display-4">{{ username }}</h1>
+<div class="alert alert-info" role="alert">
+  Current games
+</div>
   <div class="row">
         
-    {% for game in topgames %}
+    {% for game in topgames[:12] %}
     <div class="col-sm-2">
       <div class="card">
-        <img src="{{game[4]}}" class="img-thumbnail rounded" alt="...">
+        <img src="{{ game.thumbnail }}" class="img-thumbnail rounded" alt="...">
         <div class="card-body">
           <ul class="list-group list-group-flush">
-            <h6 class="card-title">{{ game[2] }}</h5>
+            <h6 class="card-title">{{ game.primaryname }}</h5>
             <!-- <li class="list-group-item">{{ game[2] }}</li> -->
-            <li class="list-group-item">{{ game[3] }}
-              <span class="badge badge-primary badge-pill">{{ game[1] }}</span>
+            <li class="list-group-item">{{ game.yearpublished }}
+              <span class="badge badge-primary badge-pill">{{ game.userrating }}</span>
             </li>
           </ul>
         </div>
@@ -21,6 +24,29 @@
     </div>
     {% endfor %}
   </div>
+
+  <div class="alert alert-info" role="alert">
+    Recommendations
+  </div>
+  <div class="row">
+    {% for game in recos %}
+    <div class="col-sm-2">
+      <div class="card">
+        <img src="{{ game.thumbnail }}" class="img-thumbnail rounded" alt="...">
+        <div class="card-body">
+          <ul class="list-group list-group-flush">
+            <h6 class="card-title">{{ game.primaryname }}</h5>
+            <!-- <li class="list-group-item">{{ game[2] }}</li> -->
+            <li class="list-group-item">{{ game.yearpublished }}
+              <span class="badge badge-primary badge-pill">{{ game.rank }}</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
 </div>
 {% endblock %}
 
