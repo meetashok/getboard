@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+<p>{{ username }}</p>
+<div class="container">
+  <div class="row">
+        
+    {% for game in topgames %}
+    <div class="col-sm-2">
+      <div class="card">
+        <img src="{{game[4]}}" class="img-thumbnail rounded" alt="...">
+        <div class="card-body">
+          <ul class="list-group list-group-flush">
+            <h6 class="card-title">{{ game[2] }}</h5>
+            <!-- <li class="list-group-item">{{ game[2] }}</li> -->
+            <li class="list-group-item">{{ game[3] }}
+              <span class="badge badge-primary badge-pill">{{ game[1] }}</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}
+
