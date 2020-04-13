@@ -10,8 +10,8 @@ import turicreate as tc
 app = Flask(__name__)
 api = Api(app)
 
-item_model = tc.load_model("../models/itemsimilarity_2020-03-15")
-factorization_model = tc.load_model("../models/factorization_2020-04-11")
+item_model = tc.load_model("models/itemsimilarity_2020-03-15")
+factorization_model = tc.load_model("models/factorization_2020-04-11")
 
 db, dbuser, dbhost = "ashok", "ashok", "localhost"
 database = Database(db, dbuser, dbhost)
