@@ -38,9 +38,11 @@ class BGGAPI(object):
             for item in items:
                 userinfo.append(self._item_info(item))
         
-        s = sorted(userinfo, key=lambda x: x[1])[::-1]
+        s = sorted(userinfo, key=lambda x: -x[1])
 
-        names = ["gameid", "userrating", "primaryname", "yearpublished", "thumbnail"]
+        names = ["gameid", "userrating", "primaryname", "yearpublished", "gamerank", 
+            "usersrated", "bayesaverage", "minplayers", "maxplayers", "playingtime",
+            "minplaytime", "maxplaytime", "thumbnail"]
         return makedict(s, names)
 
     def get_usergames(self, username):
@@ -110,7 +112,9 @@ class Database(object):
     def get_usergames(self, username):
         query = f"""select getboard.userinfo.gameid, 
             case when userrating is null then 0 else userrating end as userrating, 
-            primaryname, yearpublished, thumbnail
+            primaryname, yearpublished, gamerank, usersrated,
+            bayesaverage, minplayers, maxplayers, playingtime,
+            minplaytime, maxplaytime, thumbnail
             from getboard.userinfo
             join getboard.gamesinfo
             on getboard.userinfo.gameid = getboard.gamesinfo.gameid
@@ -120,8 +124,28 @@ class Database(object):
         self.conn.execute(query)
         rows = self.conn.fetchall()
 
-        names = ["gameid", "userrating", "primaryname", "yearpublished", "thumbnail"]
+        names = ["gameid", "userrating", "primaryname", "yearpublished", "gamerank", 
+            "usersrated", "bayesaverage", "minplayers", "maxplayers", "playingtime",
+            "minplaytime", "maxplaytime", "thumbnail"]
         return makedict(rows, names)
+
+    def get_categories(self, category, sorting):
+        if sorting == "popular":
+            orderby = "count(1) desc"
+        if sorting == "alphabetical":
+            orderby = "category" 
+
+        query = f"""select category as frequency
+        from getboard.gamecategories
+        where categorytype = '{category}'
+        group by category
+        order by {orderby};
+        """
+        self.conn.execute(query)
+        rows = self.conn.fetchall()
+
+        return [row[0] for row in rows]
+
 
 if __name__ == "__main__":
     db = Database("ashok", "ashok", "localhost")

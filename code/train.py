@@ -5,7 +5,7 @@ import pandas as pd
 import numpy as np
 
 import turicreate as tc
-from turicreate import recommender, item_similarity_recommender
+from turicreate import recommender, item_similarity_recommender, factorization_recommender
 
 def build_userinfo(datalocation, username_th=5, gameid_th=5):
     '''Userinfo dataset is read. Records where no rating is present
@@ -86,12 +86,12 @@ def recommender_model(model, data):
     return trained_model
 
 if __name__ == "__main__":
-    datalocation = "../data/userinfo.csv"
+    datalocation = "../../data/userinfo.csv"
     data = build_userinfo(datalocation)
 
     print("Building model...")
-    model = recommender_model(item_similarity_recommender, data)
+    model = recommender_model(factorization_recommender, data)
     
     print("Saving model...")
-    model.save("../models/itemsimilarity_2020-03-15")
+    model.save("../models/factorization-2020-04-11")
 

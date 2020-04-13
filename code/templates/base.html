@@ -24,6 +24,7 @@
         <li class="nav-item active">
           <a class="nav-link" href="/">Home<span class="sr-only">(current)</span></a>
         </li>
+        
         {% if not session.authenticated %}
         <li class="nav-item">
           <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseLogin" aria-expanded="false" aria-controls="collapseLogin">
@@ -40,6 +41,7 @@
           </div>
         </div>
         {% endif %}
+
         {% if session.authenticated %}
         <li class="nav-item">
           <form action="/logout" method="post">
@@ -47,11 +49,13 @@
           </form>
         </li>
         {% endif %}
+
         {% if session.failed_authentication %}
         <li class="nav-item">
           <span class="nav-link"><span class="badge badge-danger">Incorrect username/password!</span></span>
         </li>
         {% endif %}
+
         {% if session.authenticated %}
         <li class="nav-item">
           <span class="nav-link"><span class="text-white">Welcome {{session.username}}!</span></span>
@@ -65,7 +69,9 @@
     <div class="alert alert-warning" role="alert">{{ session }}</div>
   </div>
 </nav>
-{% block content %} {% endblock %}
+
+{% block content %}
+{% endblock %}
 
 <!-- JS imports: jQuery,Popper.js,Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

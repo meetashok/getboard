@@ -2,12 +2,31 @@
 {% block content %}
 <div class="container">
 
-  <div class="col-sm-6">
-    <button type="button" class="btn btn-primary btn-lg btn-block">Block level button</button>
-  </div>
-  
+  <form action="">
+    <div class="form-row">
+      
+      <div class="form-group-sm col-md-6">
+        <label for="inputEmail4">Game Category</label>
+        <select class="browser-default custom-select">
+          <option selected>Open this select menu</option>
+          <option value="1">One</option>
+          <option value="2">Two</option>
+          <option value="3">Three</option>
+        </select>
+      </div>
 
+      <div class="form-group-sm col-md-6">
+        <label for="inputEmail4">Game Mechanic</label>
+        <select class="browser-default custom-select">
+          <option selected>Open this select menu</option>
+          <option value="1">One</option>
+          <option value="2">Two</option>
+          <option value="3">Three</option>
+        </select>
+      </div>
 
+    </div>
+  </form>
 
 <div class="alert alert-info" role="alert">
   Current games for {{ username }} ({{ topgames | length }})
