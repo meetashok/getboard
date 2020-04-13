@@ -29,3 +29,15 @@ The datasets are located on Google Drive at https://drive.google.com/drive/folde
 
 
 Other files aren't likely to be useful for further processing
+
+<hr>
+
+## Set-up process
+
+1. Clone the repository (https://github.gatech.edu/akumar627/getboard.git)
+2. Download data from [Google Drive](https://drive.google.com/drive/folders/13yZQzZsj2ad2QZEvdno1Ivj3cXESJIJ9) and put it in the data folder
+3. Install Postgres.app from [https://postgresapp.com/](https://postgresapp.com/)
+4. Run the following command to set up the database: `psql -f postgres_setup.sql`
+5. Create a new conda environment with `conda create -n getboard python=3.7`
+6. Install requirments using `pip install -r requirements.txt`
+7. Run the app using `python app.py`. You may have to configure the variables `db` and `dbuser` in `app.py` on line 12

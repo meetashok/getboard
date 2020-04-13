@@ -8,6 +8,8 @@ data/*.zip
 data/*.csv
 data/*
 # models/*
+getboard.db
+*.db
 
 # Byte-compiled / optimized / DLL files
 100+/*
