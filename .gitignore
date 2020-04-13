@@ -7,7 +7,7 @@ data/usernames.zip
 data/*.zip
 data/*.csv
 data/*
-models/*
+# models/*
 
 # Byte-compiled / optimized / DLL files
 100+/*

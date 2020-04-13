@@ -1,0 +1,13 @@
+[sframe]
+version=0
+num_segments=0
+num_columns=3
+nrows=19553
+[column_names]
+0000=gameid
+0001=linear_terms
+0002=factors
+[column_files]
+0000=m_d4a729414a1f8245.sidx:0
+0001=m_d4a729414a1f8245.sidx:1
+0002=m_d4a729414a1f8245.sidx:2
