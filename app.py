@@ -30,7 +30,7 @@ def username(username):
         user_found = True #user found in our internal database
     else:
         user_found = False #user not found in our internal database 
-        usergames = api.get_usergames(username) #games for user downloaded from API
+        usergames = bggapi.get_usergames(username) #games for user downloaded from API
 
     if user_found:
         gameids, ranks = engine_factorization.recommendations(username, 10)
