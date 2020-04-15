@@ -1,5 +1,53 @@
 {% extends "base.html" %}
 {% block content %}
 
-<p>Hello, world!</p>
+<div class="container">
+<div class="jumbotron" style="margin-top:-50px;padding-bottom:10px;">
+  <h1 class="display-5">Welcome to GetBoard!</h1>
+  <p class="lead">GetBoard is your one stop shop for board game recommendations</p>
+  <hr class="my-4">
+  <p>
+    Login if you are an existing boardgamegeek.com user or start from scratch and follow the form below.
+    GetBoard uses machine learning and your game board profile inputs to recommend new board games just for you.
+    <a class="btn btn-link" href="#" role="button">Learn more</a>
+  </p>
+</div>
+
+Select games you enjoy to begin your board game recommendations:
+<div class="input-group mb-3">
+  <input type="text" class="form-control" placeholder="Search Board Game" aria-label="Recipient's username" aria-describedby="button-addon2">
+  <div class="input-group-append">
+    <button class="btn btn-primary" type="button" id="button-addon2">
+    <!-- svg search icon -->
+    <svg class="bi bi-search" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+      <path fill-rule="evenodd" d="M10.442 10.442a1 1 0 011.415 0l3.85 3.85a1 1 0 01-1.414 1.415l-3.85-3.85a1 1 0 010-1.415z" clip-rule="evenodd"/>
+      <path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 100-11 5.5 5.5 0 000 11zM13 6.5a6.5 6.5 0 11-13 0 6.5 6.5 0 0113 0z" clip-rule="evenodd"/>
+    </svg>
+    </button>
+  </div>
+</div>
+
+<div class="alert alert-info" role="alert">
+Popular Games
+</div>
+<div class="row">
+  {% for game in topgames[:6] %}
+  <div class="col-sm-2">
+    <div class="card">
+      <img src="{{ game.thumbnail }}" class="img-thumbnail rounded" alt="...">
+      <div class="card-body">
+        <ul class="list-group list-group-flush">
+          <h6 class="card-title">{{ game.primaryname }}</h5>
+          <!-- <li class="list-group-item">{{ game[2] }}</li> -->
+          <li class="list-group-item">{{ game.yearpublished }}
+            <span class="badge badge-primary badge-pill">{{ game.userrating }}</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+</div>
 {% endblock %}
