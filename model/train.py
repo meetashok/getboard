@@ -86,12 +86,18 @@ def recommender_model(model, data):
     return trained_model
 
 if __name__ == "__main__":
-    datalocation = "../../data/userinfo.csv"
+    datalocation = "../data/userinfo.csv"
     data = build_userinfo(datalocation)
 
-    print("Building model...")
+    print("Building factorization model...")
     model = recommender_model(factorization_recommender, data)
     
-    print("Saving model...")
-    model.save("../models/factorization-2020-04-11")
+    print("Saving factorization model...")
+    model.save("../models/factorization_2020-04-11")
+
+    print("Building item-similarity model...")
+    model = recommender_model(item_similarity_recommender, data)
+    
+    print("Saving item-similarity model...")
+    model.save("../models/itemsimilarity_2020-03-15")
 
