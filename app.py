@@ -9,7 +9,7 @@ from helper import Database, BGGAPI, RecommendationEngine
 item_model = tc.load_model("models/itemsimilarity_2020-03-15")
 factorization_model = tc.load_model("models/factorization_2020-04-11")
 
-db, dbuser, dbhost = "ashok", "ashok", "localhost"
+db, dbuser, dbhost = "me871x", "me871x", "localhost"
 database = Database(db, dbuser, dbhost)
 engine_item = RecommendationEngine(item_model)
 engine_factorization = RecommendationEngine(factorization_model)
@@ -20,7 +20,12 @@ app.secret_key = 'development key'
 
 @app.route("/", methods=["GET", "POST"])
 def index():
-    return render_template("index.html")
+    # pull list of popular games instead of xatsmann's games
+    usergames = database.get_usergames("xatsmann")
+     
+    return render_template("index.html",
+      topgames=usergames
+    )
 
 @app.route('/user/<string:username>', methods=["GET"])
 def username(username):
@@ -30,7 +35,7 @@ def username(username):
         user_found = True #user found in our internal database
     else:
         user_found = False #user not found in our internal database 
-        usergames = api.get_usergames(username) #games for user downloaded from API
+        usergames = bggapi.get_usergames(username) #games for user downloaded from API
 
     if user_found:
         gameids, ranks = engine_factorization.recommendations(username, 10)
@@ -41,8 +46,7 @@ def username(username):
         for game in gameinfo:
             game["rank"] = ranks[gameids.index(game["gameid"])]
             recos.append(game)
-
-    print(recos)
+    print("recos:",recos)
 
     return render_template("username.html", 
             username=username, 
