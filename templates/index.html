@@ -14,40 +14,126 @@
 </div>
 
 Select games you enjoy to begin your board game recommendations:
-<div class="input-group mb-3">
-  <input type="text" class="form-control" placeholder="Search Board Game" aria-label="Recipient's username" aria-describedby="button-addon2">
-  <div class="input-group-append">
-    <button class="btn btn-primary" type="button" id="button-addon2">
-    <!-- svg search icon -->
-    <svg class="bi bi-search" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-      <path fill-rule="evenodd" d="M10.442 10.442a1 1 0 011.415 0l3.85 3.85a1 1 0 01-1.414 1.415l-3.85-3.85a1 1 0 010-1.415z" clip-rule="evenodd"/>
-      <path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 100-11 5.5 5.5 0 000 11zM13 6.5a6.5 6.5 0 11-13 0 6.5 6.5 0 0113 0z" clip-rule="evenodd"/>
-    </svg>
-    </button>
-  </div>
-</div>
-
-<div class="alert alert-info" role="alert">
-Popular Games
-</div>
-<div class="row">
-  {% for game in topgames[:6] %}
-  <div class="col-sm-2">
-    <div class="card">
-      <img src="{{ game.thumbnail }}" class="img-thumbnail rounded" alt="...">
-      <div class="card-body">
-        <ul class="list-group list-group-flush">
-          <h6 class="card-title">{{ game.primaryname }}</h5>
-          <!-- <li class="list-group-item">{{ game[2] }}</li> -->
-          <li class="list-group-item">{{ game.yearpublished }}
-            <span class="badge badge-primary badge-pill">{{ game.userrating }}</span>
-          </li>
-        </ul>
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title">Games List</h5>
+    {% if user_game_list %}
+    <p class="card-text">Currently there are {{ user_game_list | length }} games in the list. Choose which games you want to use for your game board recommendations</p>
+    {% else %}
+    <p class="card-text">You currently have no games in your list. Choose games below either via search or from the popular games list</p>
+    {% endif %}
+  {% if user_game_list %}
+  <form action="/" method="post">
+  <div class="row">
+    {% for game in user_game_list %}
+    <div class="col-sm-2">
+      <div class="card">
+        <label class="btn btn-light">
+          <img src="{{ game.thumbnail }}" class="img-thumbnail rounded img-check">
+          <input type="checkbox" class="form-check-input" name="recommendation_inputs_{{ game.primaryname }}" value="{{ game.gameid }}">
+        </label>
       </div>
     </div>
+    {% endfor %}
   </div>
-  {% endfor %}
+  <div class="row" style="padding-top:20px;">
+  <div class="col-sm-6">
+  <input type="hidden" name="populargames" value="{{ populargames }}">
+  <input type="hidden" name="search_game_title_results" value="{{ search_game_title_results }}">
+  <button type="submit" class="btn btn-primary">GETBOARD! (run recommendation engine)</button>
+  </div>
+  </div>
+  </form>
+  </div>
+  {% endif %}
+  {% if recommended_games %}
+  <div class="card-body">
+    <h5 class="card-title">Recommended Games</h5>
+    <div class="row">
+      {% for game in recommended_games %}
+      <div class="col-sm-2">
+        <div class="card">
+          <img src="{{ game.thumbnail }}" class="img-thumbnail rounded" alt="...">
+          <div class="card-body">
+            <ul class="list-group list-group-flush">
+              <h6 class="card-title">{{ game.primaryname }}</h5>
+              <li class="list-group-item">{{ game.yearpublished }}</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div> 
+  </div> 
+  {% endif %}
 </div>
+
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title">Game Search</h5>
+    <p class="card-text">Search for a game and add the result to the recommendation engine's bag by clicking on the title</p>
+    <form action="/" method="post">
+    <div class="input-group mb-3">
+      <input type="text" class="form-control" placeholder="search board games by name" name="search_game_title_request" value="{{ request.form.search_game_title_request }}" required>
+      <div class="input-group-append">
+        <button class="btn btn-primary" type="submit" id="button-addon2">
+        <!-- svg search icon -->
+        <svg class="bi bi-search" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" d="M10.442 10.442a1 1 0 011.415 0l3.85 3.85a1 1 0 01-1.414 1.415l-3.85-3.85a1 1 0 010-1.415z" clip-rule="evenodd"/>
+          <path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 100-11 5.5 5.5 0 000 11zM13 6.5a6.5 6.5 0 11-13 0 6.5 6.5 0 0113 0z" clip-rule="evenodd"/>
+        </svg>
+        </button>
+      </div>
+      <input type="hidden" name="populargames" value="{{ populargames }}">
+    </div>
+    </form> 
+  </div>
+  {% if search_game_title_results %}
+  <div class="row">
+    {% for game in search_game_title_results[:6] %}
+    <div class="col-sm-2">
+      <div class="card">
+        <img src="{{ game.thumbnail }}" class="img-thumbnail rounded" alt="...">
+        <div class="card-body">
+          <ul class="list-group list-group-flush">
+            <h6 class="card-title">{{ game.primaryname }}</h5>
+            <li class="list-group-item">{{ game.yearpublished }}</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <!-- show message that search didn't return any matches in our game board database-->
+  {% endif %}
+</div>
+
+
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title">Popular Games</h5>
+    <p class="card-text">Choose games from a list of the most current popular game board titles</p>
+  </div>
+  {% if populargames %}
+  <div class="row">
+    {% for game in populargames[:12] %}
+    <div class="col-sm-2">
+      <div class="card">
+        <img src="{{ game.thumbnail }}" class="img-thumbnail rounded" alt="...">
+        <div class="card-body">
+          <ul class="list-group list-group-flush">
+            <h6 class="card-title">{{ game.primaryname }}</h5>
+            <li class="list-group-item">{{ game.yearpublished }}</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+</div>
+
 
 </div>
 {% endblock %}

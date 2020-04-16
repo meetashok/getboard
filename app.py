@@ -3,6 +3,7 @@ from flask import Flask, render_template, redirect, url_for, request
 import turicreate as tc
 import sys
 import datetime
+import ast
 
 from helper import Database, BGGAPI, RecommendationEngine
 
@@ -20,11 +21,52 @@ app.secret_key = 'development key'
 
 @app.route("/", methods=["GET", "POST"])
 def index():
-    # pull list of popular games instead of xatsmann's games
-    usergames = database.get_usergames("xatsmann")
+    search_game_title_request = ""
+    search_game_title_results = []
+    populargames = [] 
+    user_game_list = []
+    recommended_games = [] 
+     
+    if request.method == "GET":
+      print("GET REQUEST!")
+      # pull list of popular games
+      populargames = database.popular_games(k=12, top=100, percentile=0.90)
+      # print("populargames:",populargames)
+     
+    elif request.method == "POST":
+      print("POST REQUEST!")
+      request_form = request.form.to_dict()
+      print("request_form", request_form, "\n")
+       
+      # search game (return fields: gameid,primaryname,yearpublished,gamerank,usersrated,bayesaverage,minplayers,maxplayers,playingtime,minplaytime,maxplaytime,thumbnail)
+      if "search_game_title_results" in request_form:
+        search_game_title_results = ast.literal_eval(request_form['search_game_title_results'])
+      if "search_game_title_request" in request_form:
+        search_game_title_request = request_form['search_game_title_request']
+        search_game_title_results = database.search_games(search_game_title_request, k=None)
+        print("search_game_title_results:",search_game_title_results)
+      # display previous populargames list
+      if "populargames" in request_form:
+        populargames = ast.literal_eval(request_form['populargames'])
+       
+      # provide recommendations given a list of game ids
+      recommendation_inputs = [val for key, val in request_form.items() if "recommendation_inputs" in key]
+      if len(recommendation_inputs) > 0:
+        recommendation_inputs = [int(gameid) for gameid in recommendation_inputs]
+        recommended_gameids = engine_item.recommendations_newuser(recommendation_inputs, k=12, filters={})[0]
+        recommended_games = database.games_info(recommended_gameids)
+        # recommended_games = engine_factorization.recommendations_newuser(recommendation_inputs, k=12, filters={})
+        print("recommended_games:",recommended_games)
+       
+      # game list
+      user_game_list = populargames[:2] + search_game_title_results[:1]
      
     return render_template("index.html",
-      topgames=usergames
+      populargames=populargames,
+      search_game_title_request=search_game_title_request,
+      search_game_title_results=search_game_title_results,
+      user_game_list=user_game_list,
+      recommended_games=recommended_games
     )
 
 @app.route('/user/<string:username>', methods=["GET"])
