@@ -13,7 +13,11 @@
   </p>
 </div>
 
+<div class="container">
+<div class="container">
 Select games you enjoy to begin your board game recommendations:
+
+<!-- Games List -->
 <div class="card">
   <div class="card-body">
     <h5 class="card-title">Games List</h5>
@@ -28,46 +32,54 @@ Select games you enjoy to begin your board game recommendations:
     {% for game in user_game_list %}
     <div class="col-sm-2">
       <div class="card">
-        <label class="btn btn-light">
+        <label class="btn btn-light" style="padding: 0px;">
           <img src="{{ game.thumbnail }}" class="img-thumbnail rounded img-check">
           <input type="checkbox" class="form-check-input" name="recommendation_inputs_{{ game.primaryname }}" value="{{ game.gameid }}">
+          <div class="card-body">
+            <ul class="list-group list-group-flush">
+              <h6 class="card-title">{{ game.primaryname }}</h5>
+            </ul>
+          </div>
         </label>
       </div>
     </div>
     {% endfor %}
   </div>
   <div class="row" style="padding-top:20px;">
-  <div class="col-sm-6">
-  <input type="hidden" name="populargames" value="{{ populargames }}">
-  <input type="hidden" name="search_game_title_results" value="{{ search_game_title_results }}">
-  <button type="submit" class="btn btn-primary">GETBOARD! (run recommendation engine)</button>
-  </div>
-  </div>
-  </form>
-  </div>
-  {% endif %}
-  {% if recommended_games %}
-  <div class="card-body">
-    <h5 class="card-title">Recommended Games</h5>
-    <div class="row">
-      {% for game in recommended_games %}
-      <div class="col-sm-2">
-        <div class="card">
-          <img src="{{ game.thumbnail }}" class="img-thumbnail rounded" alt="...">
-          <div class="card-body">
-            <ul class="list-group list-group-flush">
-              <h6 class="card-title">{{ game.primaryname }}</h5>
-              <li class="list-group-item">{{ game.yearpublished }}</li>
-            </ul>
+    <div class="col-sm-6">
+    <input type="hidden" name="populargames" value="{{ populargames }}">
+    <input type="hidden" name="user_game_list" value="{{ user_game_list }}">
+    <input type="hidden" name="search_game_title_results" value="{{ search_game_title_results }}">
+    <button type="submit" class="btn btn-success">GETBOARD! (run recommendation engine)</button>
+    </div>
+    </div>
+    </form>
+    </div>
+    {% endif %}
+    {% if recommended_games %}
+    <div class="card-body">
+      <h5 class="card-title">Recommended Games</h5>
+      <div class="row">
+        {% for game in recommended_games %}
+        <div class="col-sm-2">
+          <div class="card">
+            <img src="{{ game.thumbnail }}" class="img-thumbnail rounded" alt="...">
+            <div class="card-body">
+              <ul class="list-group list-group-flush">
+                <h6 class="card-title">{{ game.primaryname }}</h5>
+                <li class="list-group-item">{{ game.yearpublished }}</li>
+              </ul>
+            </div>
           </div>
         </div>
-      </div>
-      {% endfor %}
+        {% endfor %}
+      </div> 
     </div> 
-  </div> 
   {% endif %}
+  </div>
 </div>
 
+<!-- Game Search -->
 <div class="card">
   <div class="card-body">
     <h5 class="card-title">Game Search</h5>
@@ -85,55 +97,84 @@ Select games you enjoy to begin your board game recommendations:
         </button>
       </div>
       <input type="hidden" name="populargames" value="{{ populargames }}">
+      <input type="hidden" name="user_game_list" value="{{ user_game_list }}">
     </div>
     </form> 
   </div>
   {% if search_game_title_results %}
+  <form action="/" method="post">
   <div class="row">
     {% for game in search_game_title_results[:6] %}
     <div class="col-sm-2">
       <div class="card">
-        <img src="{{ game.thumbnail }}" class="img-thumbnail rounded" alt="...">
-        <div class="card-body">
-          <ul class="list-group list-group-flush">
-            <h6 class="card-title">{{ game.primaryname }}</h5>
-            <li class="list-group-item">{{ game.yearpublished }}</li>
-          </ul>
-        </div>
+        <label class="btn btn-light" style="padding: 0px;">
+          <img src="{{ game.thumbnail }}" class="img-thumbnail rounded" alt="...">
+          <input type="checkbox" class="form-check-input" name="game_search_inputs_{{ game.primaryname }}" value="{{ game }}">
+          <div class="card-body">
+            <ul class="list-group list-group-flush">
+              <h6 class="card-title">{{ game.primaryname }}</h5>
+              <li class="list-group-item">{{ game.yearpublished }}</li>
+            </ul>
+          </div>
+        </label>
       </div>
     </div>
     {% endfor %}
   </div>
+  <div class="row" style="padding-top:20px;">
+    <div class="col-sm-6">
+    <input type="hidden" name="populargames" value="{{ populargames }}">
+    <input type="hidden" name="user_game_list" value="{{ user_game_list }}">
+    <input type="hidden" name="search_game_title_results" value="{{ search_game_title_results }}">
+    <button type="submit" class="btn btn-primary">Add Selected Games to GetBoard Games List</button>
+    </div>
+  </div>
+  </form>
   {% else %}
   <!-- show message that search didn't return any matches in our game board database-->
   {% endif %}
 </div>
 
-
+<!-- Popular Games -->
 <div class="card">
   <div class="card-body">
     <h5 class="card-title">Popular Games</h5>
     <p class="card-text">Choose games from a list of the most current popular game board titles</p>
   </div>
   {% if populargames %}
+  <form action="/" method="post">
   <div class="row">
     {% for game in populargames[:12] %}
     <div class="col-sm-2">
       <div class="card">
-        <img src="{{ game.thumbnail }}" class="img-thumbnail rounded" alt="...">
-        <div class="card-body">
-          <ul class="list-group list-group-flush">
-            <h6 class="card-title">{{ game.primaryname }}</h5>
-            <li class="list-group-item">{{ game.yearpublished }}</li>
-          </ul>
-        </div>
+        <label class="btn btn-light" style="padding: 0px;">
+          <img src="{{ game.thumbnail }}" class="img-thumbnail rounded" alt="...">
+          <input type="checkbox" class="form-check-input" name="popular_game_inputs_{{ game.primaryname }}" value="{{ game }}">
+          <div class="card-body">
+            <ul class="list-group list-group-flush">
+              <h6 class="card-title">{{ game.primaryname }}</h5>
+              <li class="list-group-item">{{ game.yearpublished }}</li>
+            </ul>
+          </div>
+        </label>
       </div>
     </div>
     {% endfor %}
   </div>
+  <div class="row" style="padding-top:20px;">
+    <div class="col-sm-6">
+    <input type="hidden" name="populargames" value="{{ populargames }}">
+    <input type="hidden" name="user_game_list" value="{{ user_game_list }}">
+    <input type="hidden" name="search_game_title_results" value="{{ search_game_title_results }}">
+    <button type="submit" class="btn btn-primary">Add Selected Games to GetBoard Games List</button>
+    </div>
+  </div>
+  </form>
   {% endif %}
 </div>
 
 
+</div>
+</div>
 </div>
 {% endblock %}
