@@ -164,12 +164,40 @@ class Database(object):
         from getboard.gamecategories
         where categorytype = '{category}'
         group by category
-        order by {orderby};
+        order by {orderby}
+        limit 10;
         """
         self.conn.execute(query)
         rows = self.conn.fetchall()
 
         return [row[0] for row in rows]
+    
+    def get_gamesbyfilter(self,gameids,category):
+        gameids_string = ",".join([str(gameid) for gameid in gameids])
+
+        cat_query = f"""select gameid
+                    from getboard.gamecategories
+                    where gameid in ({gameids_string})
+                    and category = '{category}';"""
+        self.conn.execute(cat_query)
+        cat_game_rows = self.conn.fetchall()
+
+        if len(cat_game_rows) < 1:
+            query = f"""select 
+                    gameid, primaryname, yearpublished, gamerank,
+                    usersrated, bayesaverage, minplayers, maxplayers,
+                    playingtime, minplaytime, maxplaytime, thumbnail
+                    from getboard.gamesinfo
+                    where gameid in ({gameids_string});"""
+        else:
+            gameids_cat_string = ",".join([str(gameid_c[0]) for gameid_c in cat_game_rows])
+
+            query = f"""select 
+                    gameid, primaryname, yearpublished, gamerank,
+                    usersrated, bayesaverage, minplayers, maxplayers,
+                    playingtime, minplaytime, maxplaytime, thumbnail
+                    from getboard.gamesinfo
+                    where gameid in ({gameids_cat_string});"""
 
     def popular_games(self, k=12, top=100, percentile=0.90):
         """Method returns popular games based on bayesaverage rating 
