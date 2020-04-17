@@ -28,6 +28,15 @@ Select games you enjoy to begin your board game recommendations:
     {% endif %}
   {% if user_game_list %}
   <form action="/" method="post">
+  <div class="row" style="padding-bottom:20px;">
+    <div class="col-sm-2">
+      <input type="hidden" name="populargames" value="{{ populargames }}">
+      <input type="hidden" name="search_game_title_results" value="{{ search_game_title_results }}">
+      <button type="submit" class="btn btn-danger">Clear Game List</button>
+    </div>
+  </div>
+  </form>
+  <form action="/" method="post">
   <div class="row">
     {% for game in user_game_list %}
     <div class="col-sm-2">
@@ -46,12 +55,10 @@ Select games you enjoy to begin your board game recommendations:
     {% endfor %}
   </div>
   <div class="row" style="padding-top:20px;">
-    <div class="col-sm-6">
     <input type="hidden" name="populargames" value="{{ populargames }}">
     <input type="hidden" name="user_game_list" value="{{ user_game_list }}">
     <input type="hidden" name="search_game_title_results" value="{{ search_game_title_results }}">
-    <button type="submit" class="btn btn-success">GETBOARD! (run recommendation engine)</button>
-    </div>
+    <button type="submit" class="btn btn-success btn-block">GETBOARD! (run recommendation engine)</button>
     </div>
     </form>
     </div>
@@ -103,6 +110,15 @@ Select games you enjoy to begin your board game recommendations:
   </div>
   {% if search_game_title_results %}
   <form action="/" method="post">
+  <div class="row" style="padding-bottom:20px;">
+    <div class="col-sm-9">
+      <input type="hidden" name="populargames" value="{{ populargames }}">
+      <input type="hidden" name="user_game_list" value="{{ user_game_list }}">
+      <button type="submit" class="btn btn-danger">Clear Game Search</button>
+    </div>
+  </div>
+  </form>
+  <form action="/" method="post">
   <div class="row">
     {% for game in search_game_title_results[:6] %}
     <div class="col-sm-2">
@@ -122,12 +138,10 @@ Select games you enjoy to begin your board game recommendations:
     {% endfor %}
   </div>
   <div class="row" style="padding-top:20px;">
-    <div class="col-sm-6">
     <input type="hidden" name="populargames" value="{{ populargames }}">
     <input type="hidden" name="user_game_list" value="{{ user_game_list }}">
     <input type="hidden" name="search_game_title_results" value="{{ search_game_title_results }}">
-    <button type="submit" class="btn btn-primary">Add Selected Games to GetBoard Games List</button>
-    </div>
+    <button type="submit" class="btn btn-primary btn-block">Add Selected Games to GetBoard Games List</button>
   </div>
   </form>
   {% else %}
@@ -162,12 +176,10 @@ Select games you enjoy to begin your board game recommendations:
     {% endfor %}
   </div>
   <div class="row" style="padding-top:20px;">
-    <div class="col-sm-6">
     <input type="hidden" name="populargames" value="{{ populargames }}">
     <input type="hidden" name="user_game_list" value="{{ user_game_list }}">
     <input type="hidden" name="search_game_title_results" value="{{ search_game_title_results }}">
-    <button type="submit" class="btn btn-primary">Add Selected Games to GetBoard Games List</button>
-    </div>
+    <button type="submit" class="btn btn-primary btn-block">Add Selected Games to GetBoard Games List</button>
   </div>
   </form>
   {% endif %}
