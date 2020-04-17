@@ -138,10 +138,13 @@ def filter(username):
         user_found = False  # user not found in our internal database
         usergames = bggapi.get_usergames(username)  # games for user downloaded from API
 
+    #print("usergames",usergames)
     usergameids = [sub['gameid'] for sub in usergames]
-
+    print("usergameIDs",usergameids)
+    print("select",select)
     usergames = database.get_gamesbyfilter(gameids=usergameids, category=select)
     usergames_storage = usergames
+    print(usergames_storage)
     usergames = []
     for game in usergames_storage:
         if(game["playingtime"]<=playtime_max and game["minplayers"] <= min_players):

@@ -171,7 +171,7 @@ class Database(object):
         rows = self.conn.fetchall()
 
         return [row[0] for row in rows]
-    
+
     def get_gamesbyfilter(self,gameids,category):
         gameids_string = ",".join([str(gameid) for gameid in gameids])
 
@@ -198,6 +198,17 @@ class Database(object):
                     playingtime, minplaytime, maxplaytime, thumbnail
                     from getboard.gamesinfo
                     where gameid in ({gameids_cat_string});"""
+
+        self.conn.execute(query)
+        rows = self.conn.fetchall()
+
+        names = [
+            "gameid", "primaryname", "yearpublished",
+            "gamerank", "usersrated", "bayesaverage",
+            "minplayers", "maxplayers", "playingtime",
+            "minplaytime", "maxplaytime", "thumbnail"]
+
+        return makedict(rows, names)
 
     def popular_games(self, k=12, top=100, percentile=0.90):
         """Method returns popular games based on bayesaverage rating 
