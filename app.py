@@ -4,6 +4,7 @@ import turicreate as tc
 import sys
 import datetime
 import ast
+from pprint import pprint
 
 from helper import Database, BGGAPI, RecommendationEngine
 
@@ -36,7 +37,7 @@ def index():
     elif request.method == "POST":
       print("POST REQUEST!")
       request_form = request.form.to_dict()
-      print("request_form", request_form, "\n")
+      # print("request_form", request_form, "\n")
        
       # search game (return fields: gameid,primaryname,yearpublished,gamerank,usersrated,bayesaverage,minplayers,maxplayers,playingtime,minplaytime,maxplaytime,thumbnail)
       if "search_game_title_results" in request_form:
@@ -44,7 +45,22 @@ def index():
       if "search_game_title_request" in request_form:
         search_game_title_request = request_form['search_game_title_request']
         search_game_title_results = database.search_games(search_game_title_request, k=None)
-        print("search_game_title_results:",search_game_title_results)
+        print("search_game_title_results:",search_game_title_results, "\n")
+      if "user_game_list" in request_form:
+        user_game_list = ast.literal_eval(request_form['user_game_list'])
+       
+      # game search inputs 
+      game_search_inputs = [ast.literal_eval(val) for key, val in request_form.items() if "game_search_inputs" in key]
+      if len(game_search_inputs) > 0:
+        print("game_search_inputs:",game_search_inputs,"\n")
+        user_game_list = user_game_list + game_search_inputs
+       
+      # popular games inputs 
+      popular_games_inputs = [ast.literal_eval(val) for key, val in request_form.items() if "popular_game_inputs" in key]
+      if len(popular_games_inputs) > 0:
+        print("popular_games_inputs:",popular_games_inputs,"\n")
+        user_game_list = user_game_list + popular_games_inputs
+       
       # display previous populargames list
       if "populargames" in request_form:
         populargames = ast.literal_eval(request_form['populargames'])
@@ -56,10 +72,13 @@ def index():
         recommended_gameids = engine_item.recommendations_newuser(recommendation_inputs, k=12, filters={})[0]
         recommended_games = database.games_info(recommended_gameids)
         # recommended_games = engine_factorization.recommendations_newuser(recommendation_inputs, k=12, filters={})
-        print("recommended_games:",recommended_games)
+        print("recommended_games:",recommended_games,"\n")
        
-      # game list
-      user_game_list = populargames[:2] + search_game_title_results[:1]
+      # ensure no duplicates in game list
+      if len(user_game_list) > 0:
+        user_game_list = list({item["gameid"]: item for item in user_game_list}.values())
+        print("user_game_list:")
+        pprint(user_game_list)
      
     return render_template("index.html",
       populargames=populargames,
