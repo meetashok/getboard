@@ -99,7 +99,7 @@ def username(username):
         usergames = bggapi.get_usergames(username) #games for user downloaded from API
 
     if user_found:
-        gameids, ranks = engine_factorization.recommendations(username, 10)
+        gameids, ranks = engine_item.recommendations(username, 10)
         gameinfo = database.games_info(gameids)
 
         recos = []

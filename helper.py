@@ -289,3 +289,15 @@ if __name__ == "__main__":
     # games = db.popular_games(k=12, top=50, percentile=0.5)
     # for game in games:
     #     print(game["gamerank"], game["primaryname"])
+
+
+# filters = {
+#     "gamerank": a, # will return games with rank higher than a
+#     "usersrated": b, # will return games with userrated > b
+#     "yearpublished": (c, d), # will return games released between years a and b
+#     "playingtime": (e, f), # will return games with playing time between e ad f
+#     "minplayers": (g, h), # will return games with minplayers between g and h
+#     "maxplayers": (j, k), # will return games with maxplayers between j and k
+#     "category": [x, y, z], # will return games in selected categories
+#     "mechanic": [u, v, w], # will return games in selected mechanics
+# }
