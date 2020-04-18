@@ -1,17 +1,12 @@
 # getboard
 Get Board: Table-top boardgames recommendation engine 
 
-Link to the boardgamegeek API page 
-https://boardgamegeek.com/wiki/page/BGG_XML_API2
-
 ## DESCRIPTION
-For extracting data from boardgamegeek website, we used web-scrapping as well as their API. 
+GetBoard is a recommendation engine for table-top board-games. To build the recommendation engine we need to utilized existing user-game interaction data. [Boardgamegeek](https://boardgamegeek.com/) is a popular website that houses rich data and is made available via it's API (https://boardgamegeek.com/wiki/page/BGG_XML_API2). 
 
-The first step was to build a list of users. The website allows public users to search for users based on zipcode. Only those users shows up in the list who have opted-in to be searched. There are more than 33k zipcodes in the US. We picked the top 10k based on population and then scrapped all users within 25 miles of each zipcode. This yielded us about 36k users. 
+For us, the first step was to build a list of users. The website allows public users to search for users based on zipcode. Only those users shows up in the list who have opted-in to be searched. There are more than 33k zipcodes in the US. We picked the top 10k based on population and then scrapped all users within 25 miles of each zipcode. This yielded us about 36k users. 
 
 The API allows querying different types of data associated with each users. It includes their board-games collection, game-play information, ratings and comments for board-games. Extracting this data took about 4 days as we limited ourselves to about 1 call per 2 seconds.  
-
-The datasets are located on Google Drive at https://drive.google.com/open?id=1DLsVkERlxcaIGOHWOZjm9zNGrMI5zpVk
 
 - **userinfo.zip**
   - Comma separated file containing user level data
@@ -26,27 +21,25 @@ The datasets are located on Google Drive at https://drive.google.com/open?id=1DL
   - Zipped size = 83 MB, Unzipped = 246 MB
   - Number of records: 1,153,529 
   - Fields: username, gameid, userrating, comment
+- **gamesinfo.zip**
+  - File containing information about games
+  - Zipped size = 3MB, Unzipped = 11MB
+  - Number of records: 62,605
+  - Fields: gameid, userrating, primaryname, yearpublished, gamerank, usersrated, bayesaverage minplayers, maxplayers, playingtime, minplaytime, maxplaytime, thumbnail
 
-
-Other files aren't likely to be useful for further processing
-
-
-## INSTALLATION
+## INSTALLATION STEPS
 
 1. Clone the repository (https://github.gatech.edu/akumar627/getboard.git)
-2. Download data from [Google Drive](https://drive.google.com/drive/folders/13yZQzZsj2ad2QZEvdno1Ivj3cXESJIJ9) and put it in the data folder
-3. Install Postgres.app from [https://postgresapp.com/](https://postgresapp.com/)
-4. Open Postgres.app and start Postgres server
+2. Download data from [Google Drive](https://drive.google.com/open?id=1dgZmv85mhZbLFt7208oHWlqT2Ex2yCv_), unzip and put it in the `data` folder of the cloned repository
+3. Install Postgres.app, If you are on Mac download it from [postgres.app](https://postgresapp.com/). If you are on Windows or another OS, use [PostgreSQL database download](https://www.enterprisedb.com/downloads/postgres-postgresql-downloads)
+4. Open Postgres.app and start PostgreSQL server
 5. Change directory to getboard directory and run the following command to set up the database: `psql -f postgres_setup.sql`
 6. Create a new conda environment with `conda create -n getboard python=3.7`
 7. Run `conda activate getboard`
 8. Install requirments using `pip install -r requirements.txt`
-9. Edit `app.py` on line 14 by replacing the quoted `"db"` and `"dbuser"` in `db, dbuser, dbhost = "db", "dbuser", "localhost"` to correspond to your db and dbuser.
-10. Run the app using `python app.py`.
-11. Open your web browser and navigate to the listed url. (eg. http://127.0.0.1:5001/)
-
-*incase port 5001 is already assigned you can change the last line in `app.py` to another port.
-
+9. Edit `app.py` on line 14 by replacing the quoted `"db"` and `"dbuser"` in `db, dbuser, dbhost = "db", "dbuser", "localhost"` to correspond to your db and dbuser
+10. Run the app using `python app.py`
+11. Open your web browser and navigate to the listed url. (eg. http://127.0.0.1:5001/). Incase port 5001 is already assigned you can change the last line in `app.py` to another port
 
 ## EXECUTION
 
