@@ -11,7 +11,7 @@ The first step was to build a list of users. The website allows public users to 
 
 The API allows querying different types of data associated with each users. It includes their board-games collection, game-play information, ratings and comments for board-games. Extracting this data took about 4 days as we limited ourselves to about 1 call per 2 seconds.  
 
-The datasets are located on Google Drive at https://drive.google.com/drive/folders/13yZQzZsj2ad2QZEvdno1Ivj3cXESJIJ9
+The datasets are located on Google Drive at https://drive.google.com/open?id=1DLsVkERlxcaIGOHWOZjm9zNGrMI5zpVk
 
 - **userinfo.zip**
   - Comma separated file containing user level data
@@ -56,22 +56,22 @@ From the the GetBoard homepage you are asked to select games (by clicking on ima
 There are two sections to choose from: game search and popular games list.
 In game search you may search your game by title.
 
-![Search](/images/gameSearch.png)
+![Search](images/gameSearch.png)
 
 You then select from the results of your search and click on "Add selected games to GetBoard games list" 
 
-![popular games](/images/popularGames.png)
+![popular games](images/popularGames.png)
 
 Similarly you may click on games in the popular section and save to your games list.
 
 From your games list, choose which games you want to feed into the GetBoard recommendation engine
 then click the GetBoard button.
 
-![games list](/images/gamesList.png)
+![games list](images/gamesList.png)
 
 Below you will see your top 12 recommended board games based on your selection.
 
-![recommend games](/images/recoGames.png)
+![recommend games](images/recoGames.png)
 
 #### Existing users of Boardgamegeek.com
 
@@ -79,13 +79,13 @@ Below you will see your top 12 recommended board games based on your selection.
 
 Log in by entering your username at the top right hand corner of the homepage.
 
-![login](/images/login.png)
+![login](images/login.png)
 
 Here you will find your list of games you have saved in your bgg profile, 
 along with a bottom section of recommended games (top 6).  You can filter by category, mechanic, max playing time, 
 and minimum amount of players then clicking on Apply Fiters. 
 
-![filtering](/images/filter.png)
+![filtering](images/filter.png)
 
 
 
