@@ -33,9 +33,8 @@
         </li>
         <div class="collapse" id="collapseLogin">
           <div class="card card-body">
-            <form action="/login" method="post">
+            <form action="/user/" method="post">
               <input type="text" placeholder="Username" name="username" value="{{ request.form.username }}" required>
-               <input type="password" placeholder="Password" name="password" value="{{ request.form.password }}" required>
               <input class="btn btn-secondary" type="submit" value="Authenticate">
             </form> 
           </div>

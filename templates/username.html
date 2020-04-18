@@ -52,7 +52,7 @@
       <div class="form-group-sm col-md-6">
         <label for="inputEmail4">Game Category</label>
         <select name="cat_select" class="browser-default custom-select">
-          <option value="0" {% if cat_select == ""  %} selected {% endif %}>Open this select menu</option>
+          <option value="0" {% if cat_select == ""  %} selected {% endif %}>Select Category</option>
           {% for category in categories %}
           <option value="{{ category }}" {% if cat_select == category %} selected {%endif%}=>{{ category }}</option>
           {% endfor %}
@@ -66,7 +66,7 @@
       <div class="form-group-sm col-md-6">
         <label for="inputEmail4">Game Mechanic</label>
         <select name="mech_select" class="browser-default custom-select">
-          <option value="0" {% if mech_select == "" %} selected {% endif %}>Open this select menu</option>
+          <option value="0" {% if mech_select == "" %} selected {% endif %}>Select Mechanic</option>
            {% for mechanic in mechanics %}
           <option value="{{ mechanic }}" {% if mech_select == mechanic %} selected {%endif%}>{{ mechanic }}</option>
           {% endfor %}
