@@ -1,12 +1,12 @@
-# getboard
-Get Board: Table-top boardgames recommendation engine 
+# GetBoard
+A recommendation engine for table-top board-games
+
+<hr>
 
 ## DESCRIPTION
 GetBoard is a recommendation engine for table-top board-games. To build the recommendation engine we need to utilized existing user-game interaction data. [Boardgamegeek](https://boardgamegeek.com/) is a popular website that houses rich data and is made available via it's API (https://boardgamegeek.com/wiki/page/BGG_XML_API2). 
 
-For us, the first step was to build a list of users. The website allows public users to search for users based on zipcode. Only those users shows up in the list who have opted-in to be searched. There are more than 33k zipcodes in the US. We picked the top 10k based on population and then scrapped all users within 25 miles of each zipcode. This yielded us about 36k users. 
-
-The API allows querying different types of data associated with each users. It includes their board-games collection, game-play information, ratings and comments for board-games. Extracting this data took about 4 days as we limited ourselves to about 1 call per 2 seconds.  
+For us, the first step was to build a list of users. The website allows public users to search for users based on zipcode. Only those users shows up in the list who have opted-in to be searched. There are more than 33k zipcodes in the US. We picked the top 10k based on population and then scrapped all users within 25 miles of each zipcode. This yielded us about 36k users. The API allows querying different types of data associated with each users. It includes their board-games collection, game-play information, ratings and comments for board-games. Extracting this data took about 4 days as we limited ourselves to about 1 call per 2 seconds.  
 
 - **userinfo.zip**
   - Comma separated file containing user level data
@@ -26,10 +26,17 @@ The API allows querying different types of data associated with each users. It i
   - Zipped size = 3MB, Unzipped = 11MB
   - Number of records: 62,605
   - Fields: gameid, userrating, primaryname, yearpublished, gamerank, usersrated, bayesaverage minplayers, maxplayers, playingtime, minplaytime, maxplaytime, thumbnail
+- **gamescategories.zip**
+  - File containing mapping between games and categories / mechanics
+  - Zipped size = 73KB, Unzipped = 588KB
+  - Number of records: 15,990
+  - Fields: gameid, categorytype, category
+
+<hr>
 
 ## INSTALLATION STEPS
 
-1. Clone the repository (https://github.gatech.edu/akumar627/getboard.git)
+1. Clone the repository (https://github.com/meetashok/getboard.git)
 2. Download data from [Google Drive](https://drive.google.com/open?id=1dgZmv85mhZbLFt7208oHWlqT2Ex2yCv_), unzip and put it in the `data` folder of the cloned repository
 3. Install Postgres.app, If you are on Mac download it from [postgres.app](https://postgresapp.com/). If you are on Windows or another OS, use [PostgreSQL database download](https://www.enterprisedb.com/downloads/postgres-postgresql-downloads)
 4. Open Postgres.app and start PostgreSQL server
@@ -40,6 +47,9 @@ The API allows querying different types of data associated with each users. It i
 9. Edit `app.py` on line 14 by replacing the quoted `"db"` and `"dbuser"` in `db, dbuser, dbhost = "db", "dbuser", "localhost"` to correspond to your db and dbuser
 10. Run the app using `python app.py`
 11. Open your web browser and navigate to the listed url. (eg. http://127.0.0.1:5001/). Incase port 5001 is already assigned you can change the last line in `app.py` to another port
+
+
+<hr>
 
 ## EXECUTION
 
@@ -75,8 +85,7 @@ Log in by entering your username at the top right hand corner of the homepage.
 ![login](images/login.png)
 
 Here you will find your list of games you have saved in your bgg profile, 
-along with a bottom section of recommended games (top 6).  You can filter by category, mechanic, max playing time, 
-and minimum amount of players then clicking on Apply Fiters. 
+along with a bottom section of recommended games (top 6).  You can filter by category, mechanic, max playing time, and minimum amount of players then clicking on Apply Fiters. 
 
 ![filtering](images/filter.png)
 
