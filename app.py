@@ -11,7 +11,7 @@ from helper import Database, BGGAPI, RecommendationEngine
 item_model = tc.load_model("models/itemsimilarity_2020-03-15")
 factorization_model = tc.load_model("models/factorization_2020-04-11")
 
-db, dbuser, dbhost = "db", "dbuser", "localhost"
+db, dbuser, dbhost = "am384u", "am384u", "localhost"
 database = Database(db, dbuser, dbhost)
 engine_item = RecommendationEngine(item_model)
 engine_factorization = RecommendationEngine(factorization_model)
@@ -88,18 +88,25 @@ def index():
       recommended_games=recommended_games
     )
 
-@app.route('/user/<string:username>', methods=["GET"])
-def username(username):
+@app.route('/user/', methods=["POST"])
+def username():
+    request_form = request.form.to_dict()
+    #if "username" in request_form:
+    username = request_form['username']
     usergames = database.get_usergames(username)
+    print("usergames", usergames)
     
     if len(usergames) > 0:
         user_found = True #user found in our internal database
     else:
         user_found = False #user not found in our internal database 
         usergames = bggapi.get_usergames(username) #games for user downloaded from API
+        if len(usergames) < 1:
+            return render_template("user_not_found.html")
 
     categories = database.get_categories('category', 'popular')
     mechanics = database.get_categories('mechanic', 'popular')
+
 
     recos = []
     if user_found:
@@ -118,7 +125,6 @@ def username(username):
             recos=recos,
             categories = categories,
             mechanics = mechanics)
-
 
 @app.route('/filter/<username>', methods=["GET","POST"])
 def filter(username):
@@ -185,4 +191,4 @@ def boardgame(gameid):
 
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5001)
+    app.run(debug=True, port=5002)

@@ -4,7 +4,7 @@ Get Board: Table-top boardgames recommendation engine
 Link to the boardgamegeek API page 
 https://boardgamegeek.com/wiki/page/BGG_XML_API2
 
-## Data
+## DESCRIPTION
 For extracting data from boardgamegeek website, we used web-scrapping as well as their API. 
 
 The first step was to build a list of users. The website allows public users to search for users based on zipcode. Only those users shows up in the list who have opted-in to be searched. There are more than 33k zipcodes in the US. We picked the top 10k based on population and then scrapped all users within 25 miles of each zipcode. This yielded us about 36k users. 
@@ -30,9 +30,8 @@ The datasets are located on Google Drive at https://drive.google.com/drive/folde
 
 Other files aren't likely to be useful for further processing
 
-<hr>
 
-## Set-up process
+## INSTALLATION
 
 1. Clone the repository (https://github.gatech.edu/akumar627/getboard.git)
 2. Download data from [Google Drive](https://drive.google.com/drive/folders/13yZQzZsj2ad2QZEvdno1Ivj3cXESJIJ9) and put it in the data folder
@@ -46,4 +45,48 @@ Other files aren't likely to be useful for further processing
 10. Run the app using `python app.py`.
 11. Open your web browser and navigate to the listed url. (eg. http://127.0.0.1:5001/)
 
-*incase port 5001 is already assigned you can change the last line in `app.py` to another port. 
+*incase port 5001 is already assigned you can change the last line in `app.py` to another port.
+
+
+## EXECUTION
+
+#### New user workflow
+
+From the the GetBoard homepage you are asked to select games (by clicking on images) you like.
+There are two sections to choose from: game search and popular games list.
+In game search you may search your game by title.
+
+![Search](/images/gameSearch.png)
+
+You then select from the results of your search and click on "Add selected games to GetBoard games list" 
+
+![popular games](/images/popularGames.png)
+
+Similarly you may click on games in the popular section and save to your games list.
+
+From your games list, choose which games you want to feed into the GetBoard recommendation engine
+then click the GetBoard button.
+
+![games list](/images/gamesList.png)
+
+Below you will see your top 12 recommended board games based on your selection.
+
+![recommend games](/images/recoGames.png)
+
+#### Existing users of Boardgamegeek.com
+
+*If you are not a boardgamegeek (bgg) user you can test this functionality out with username: xatsmann
+
+Log in by entering your username at the top right hand corner of the homepage.
+
+![login](/images/login.png)
+
+Here you will find your list of games you have saved in your bgg profile, 
+along with a bottom section of recommended games (top 6).  You can filter by category, mechanic, max playing time, 
+and minimum amount of players then clicking on Apply Fiters. 
+
+![filtering](/images/filter.png)
+
+
+
+ 
