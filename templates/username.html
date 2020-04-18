@@ -1,31 +1,89 @@
 {% extends "base.html" %}
 {% block content %}
+
+<style>
+
+.slider {
+  -webkit-appearance: none;
+  width: 300px;
+  height: 25px;
+  background: #d3d3d3;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+}
+
+.slider:hover {
+  opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  background: #4CAF50;
+  cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  width: 25px;
+  height: 25px;
+  background: #4CAF50;
+  cursor: pointer;
+}
+</style>
+
+<script>
+  function show_slider_value(sliderId)
+  {
+    if(sliderId == "slider_duration")
+      document.getElementById('durationValue').innerText = " < = "+document.getElementsByName(sliderId)[0].value + " minutes"
+    else
+      document.getElementById('playerValue').innerText = " min " + document.getElementsByName(sliderId)[0].value + " players"
+  }
+</script>
 <div class="container">
 
-  <form action="">
+  <form method="POST" action="{{ url_for('filter', username=username) }}">
     <div class="form-row">
-      
+
       <div class="form-group-sm col-md-6">
         <label for="inputEmail4">Game Category</label>
-        <select class="browser-default custom-select">
-          <option selected>Open this select menu</option>
-          <option value="1">One</option>
-          <option value="2">Two</option>
-          <option value="3">Three</option>
+        <select name="cat_select" class="browser-default custom-select">
+          <option value="0" {% if cat_select == ""  %} selected {% endif %}>Open this select menu</option>
+          {% for category in categories %}
+          <option value="{{ category }}" {% if cat_select == category %} selected {%endif%}=>{{ category }}</option>
+          {% endfor %}
+          <option value="Other">Other</option>
         </select>
+        <label>Duration</label>
+        <input name="slider_duration" type="range" min="1" max="600" value={{ duration |default("120",true) }} onchange="show_slider_value('slider_duration')" style="width:350px">
+        <h6 style="display:inline" id="durationValue"> < = {{ duration |default("120",true) }} minutes</h6>
       </div>
 
       <div class="form-group-sm col-md-6">
         <label for="inputEmail4">Game Mechanic</label>
-        <select class="browser-default custom-select">
-          <option selected>Open this select menu</option>
-          <option value="1">One</option>
-          <option value="2">Two</option>
-          <option value="3">Three</option>
+        <select name="mech_select" class="browser-default custom-select">
+          <option value="0" {% if mech_select == "" %} selected {% endif %}>Open this select menu</option>
+           {% for mechanic in mechanics %}
+          <option value="{{ mechanic }}" {% if mech_select == mechanic %} selected {%endif%}>{{ mechanic }}</option>
+          {% endfor %}
+          <option value="Other">Other</option>
         </select>
+        <label>No. Players</label>
+        <input name="slider_players" type="range" min="1" value={{ players |default("4",true) }} max="20"  onchange="show_slider_value('slider_players')" style="width:340px">
+        <h6 style="display:inline" id="playerValue"> min {{ players |default("4",true) }} players</h6>
       </div>
-
+      <br>
+      <input type="submit" value="Apply Filters">
+      <br>
     </div>
+
+  </form>
+  <form method="POST" action="{{ url_for('username',username=username) }}" style="display:none">
+    <input type="submit" value="Clear Filters">
   </form>
 
 <div class="alert alert-info" role="alert">
@@ -39,7 +97,7 @@
         <img src="{{ game.thumbnail }}" class="img-thumbnail rounded" alt="...">
         <div class="card-body">
           <ul class="list-group list-group-flush">
-            <h6 class="card-title">{{ game.primaryname }}</h5>
+            <h6 class="card-title">{{ game.primaryname }}</h6>
             <!-- <li class="list-group-item">{{ game[2] }}</li> -->
             <li class="list-group-item">{{ game.yearpublished }}
               <span class="badge badge-primary badge-pill">{{ game.userrating }}</span>
@@ -61,7 +119,7 @@
         <img src="{{ game.thumbnail }}" class="img-thumbnail rounded" alt="...">
         <div class="card-body">
           <ul class="list-group list-group-flush">
-            <h6 class="card-title">{{ game.primaryname }}</h5>
+            <h6 class="card-title">{{ game.primaryname }}</h6>
             <!-- <li class="list-group-item">{{ game[2] }}</li> -->
             <li class="list-group-item">{{ game.yearpublished }}
             </li>
@@ -74,4 +132,3 @@
 
 </div>
 {% endblock %}
-

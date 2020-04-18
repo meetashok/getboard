@@ -37,7 +37,13 @@ Other files aren't likely to be useful for further processing
 1. Clone the repository (https://github.gatech.edu/akumar627/getboard.git)
 2. Download data from [Google Drive](https://drive.google.com/drive/folders/13yZQzZsj2ad2QZEvdno1Ivj3cXESJIJ9) and put it in the data folder
 3. Install Postgres.app from [https://postgresapp.com/](https://postgresapp.com/)
-4. Run the following command to set up the database: `psql -f postgres_setup.sql`
-5. Create a new conda environment with `conda create -n getboard python=3.7`
-6. Install requirments using `pip install -r requirements.txt`
-7. Run the app using `python app.py`. You may have to configure the variables `db` and `dbuser` in `app.py` on line 12
+4. Open Postgres.app and start Postgres server
+5. Change directory to getboard directory and run the following command to set up the database: `psql -f postgres_setup.sql`
+6. Create a new conda environment with `conda create -n getboard python=3.7`
+7. Run `conda activate getboard`
+8. Install requirments using `pip install -r requirements.txt`
+9. Edit `app.py` on line 14 by replacing the quoted `"db"` and `"dbuser"` in `db, dbuser, dbhost = "db", "dbuser", "localhost"` to correspond to your db and dbuser.
+10. Run the app using `python app.py`.
+11. Open your web browser and navigate to the listed url. (eg. http://127.0.0.1:5001/)
+
+*incase port 5001 is already assigned you can change the last line in `app.py` to another port. 
