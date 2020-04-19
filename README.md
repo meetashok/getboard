@@ -36,7 +36,7 @@ For us, the first step was to build a list of users. The website allows public u
 
 ## INSTALLATION STEPS
 
-1. Clone the repository (https://github.com/meetashok/getboard.git)
+1. Clone the repository (https://github.gatech.edu/akumar627/getboard.git)
 2. Download data from [Google Drive](https://drive.google.com/open?id=1dgZmv85mhZbLFt7208oHWlqT2Ex2yCv_), unzip and put it in the `data` folder of the cloned repository
 3. Install Postgres.app, If you are on Mac download it from [postgres.app](https://postgresapp.com/). If you are on Windows or another OS, use [PostgreSQL database download](https://www.enterprisedb.com/downloads/postgres-postgresql-downloads)
 4. Open Postgres.app and start PostgreSQL server
@@ -47,7 +47,6 @@ For us, the first step was to build a list of users. The website allows public u
 9. Edit `app.py` on line 14 by replacing the quoted `"db"` and `"dbuser"` in `db, dbuser, dbhost = "db", "dbuser", "localhost"` to correspond to your db and dbuser
 10. Run the app using `python app.py`
 11. Open your web browser and navigate to the listed url. (eg. http://127.0.0.1:5001/). Incase port 5001 is already assigned you can change the last line in `app.py` to another port
-
 
 <hr>
 
