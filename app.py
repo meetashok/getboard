@@ -11,7 +11,7 @@ from helper import Database, BGGAPI, RecommendationEngine
 item_model = tc.load_model("models/itemsimilarity_2020-03-15")
 factorization_model = tc.load_model("models/factorization_2020-04-11")
 
-db, dbuser, dbhost = "ashok", "ashok", "localhost"
+db, dbuser, dbhost = "db", "dbuser", "localhost"
 database = Database(db, dbuser, dbhost)
 engine_item = RecommendationEngine(item_model)
 engine_factorization = RecommendationEngine(factorization_model)

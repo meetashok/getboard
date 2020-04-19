@@ -38,6 +38,10 @@ class RecommendationEngine(object):
         games = self.model.recommend_from_interactions(observed_items=gameids, k=k)
         return list(games["gameid"]), list(games["rank"])
 
+    def get_similar_items(self, gameid):
+        games = self.model.get_similar_items(items=[gameid])
+        return list(games["gameid"]), list(games["rank"])
+
 class BGGAPI(object):
     base_url = "https://www.boardgamegeek.com"
     collections_url = "/xmlapi2/collection?username="
@@ -317,6 +321,8 @@ if __name__ == "__main__":
 
     model = RecommendationEngine(item_model)
 
+    # games = model.get_similar_items(50381)
+    # print(games)
     
     # games = db.search_games("Catan")
     # for game in games:
