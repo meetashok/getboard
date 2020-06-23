@@ -4,13 +4,15 @@ import xml.etree.ElementTree as ET
 import turicreate as tc
 import numpy as np
 
+
 def makedict(rows, names):
     return [dict(zip(names, row)) for row in rows]
+
 
 class RecommendationEngine(object):
     def __init__(self, model):
         self.model = model
-    
+
     def recommendations(self, username, k=12, filters={}):
         games = self.model.recommend(users=[username], k=k)
         return list(games["gameid"]), list(games["rank"])
@@ -42,6 +44,7 @@ class RecommendationEngine(object):
         games = self.model.get_similar_items(items=[gameid])
         return list(games["gameid"]), list(games["rank"])
 
+
 class BGGAPI(object):
     base_url = "https://www.boardgamegeek.com"
     collections_url = "/xmlapi2/collection?username="
@@ -61,17 +64,29 @@ class BGGAPI(object):
     def _parse_userdata(self, data):
         userinfo = []
         if data.get("totalitems") == "0":
-            return None #No data found
+            return None  # No data found
         else:
             items = data.findall("item")
             for item in items:
                 userinfo.append(self._item_info(item))
-        
+
         s = sorted(userinfo, key=lambda x: -x[1])
 
-        names = ["gameid", "userrating", "primaryname", "yearpublished", "gamerank", 
-            "usersrated", "bayesaverage", "minplayers", "maxplayers", "playingtime",
-            "minplaytime", "maxplaytime", "thumbnail"]
+        names = [
+            "gameid",
+            "userrating",
+            "primaryname",
+            "yearpublished",
+            "gamerank",
+            "usersrated",
+            "bayesaverage",
+            "minplayers",
+            "maxplayers",
+            "playingtime",
+            "minplaytime",
+            "maxplaytime",
+            "thumbnail",
+        ]
         return makedict(s, names)
 
     def get_usergames(self, username):
@@ -81,13 +96,14 @@ class BGGAPI(object):
 
         while not response.status_code == 200:
             response = requests.get(url)
-        
+
         data = ET.fromstring(response.text)
 
-        if data is None: #No data is returned if the user does not exist
+        if data is None:  # No data is returned if the user does not exist
             return []
         else:
             return self._parse_userdata(data)
+
 
 class Database(object):
     def __init__(self, dbname, user, host):
@@ -131,10 +147,19 @@ class Database(object):
         rows = self.conn.fetchall()
 
         names = [
-            "gameid", "primaryname", "yearpublished", 
-            "gamerank", "usersrated", "bayesaverage",
-            "minplayers", "maxplayers", "playingtime",
-            "minplaytime", "maxplaytime", "thumbnail"]
+            "gameid",
+            "primaryname",
+            "yearpublished",
+            "gamerank",
+            "usersrated",
+            "bayesaverage",
+            "minplayers",
+            "maxplayers",
+            "playingtime",
+            "minplaytime",
+            "maxplaytime",
+            "thumbnail",
+        ]
 
         return makedict(rows, names)
 
@@ -153,16 +178,28 @@ class Database(object):
         self.conn.execute(query)
         rows = self.conn.fetchall()
 
-        names = ["gameid", "userrating", "primaryname", "yearpublished", "gamerank", 
-            "usersrated", "bayesaverage", "minplayers", "maxplayers", "playingtime",
-            "minplaytime", "maxplaytime", "thumbnail"]
+        names = [
+            "gameid",
+            "userrating",
+            "primaryname",
+            "yearpublished",
+            "gamerank",
+            "usersrated",
+            "bayesaverage",
+            "minplayers",
+            "maxplayers",
+            "playingtime",
+            "minplaytime",
+            "maxplaytime",
+            "thumbnail",
+        ]
         return makedict(rows, names)
 
     def get_categories(self, category, sorting):
         if sorting == "popular":
             orderby = "count(1) desc"
         if sorting == "alphabetical":
-            orderby = "category" 
+            orderby = "category"
 
         query = f"""select category as frequency
         from getboard.gamecategories
@@ -176,7 +213,7 @@ class Database(object):
 
         return [row[0] for row in rows]
 
-    def get_gamesbyfilter(self,gameids,category):
+    def get_gamesbyfilter(self, gameids, category):
         gameids_string = ",".join([str(gameid) for gameid in gameids])
 
         cat_query = f"""select gameid
@@ -194,7 +231,9 @@ class Database(object):
                     from getboard.gamesinfo
                     where gameid in ({gameids_string});"""
         else:
-            gameids_cat_string = ",".join([str(gameid_c[0]) for gameid_c in cat_game_rows])
+            gameids_cat_string = ",".join(
+                [str(gameid_c[0]) for gameid_c in cat_game_rows]
+            )
 
             query = f"""select 
                     gameid, primaryname, yearpublished, gamerank,
@@ -207,10 +246,19 @@ class Database(object):
         rows = self.conn.fetchall()
 
         names = [
-            "gameid", "primaryname", "yearpublished",
-            "gamerank", "usersrated", "bayesaverage",
-            "minplayers", "maxplayers", "playingtime",
-            "minplaytime", "maxplaytime", "thumbnail"]
+            "gameid",
+            "primaryname",
+            "yearpublished",
+            "gamerank",
+            "usersrated",
+            "bayesaverage",
+            "minplayers",
+            "maxplayers",
+            "playingtime",
+            "minplaytime",
+            "maxplaytime",
+            "thumbnail",
+        ]
 
         return makedict(rows, names)
 
@@ -262,13 +310,21 @@ class Database(object):
         rows = self.conn.fetchall()
 
         names = [
-            "gameid", "primaryname", "yearpublished", 
-            "gamerank", "usersrated", "bayesaverage",
-            "minplayers", "maxplayers", "playingtime",
-            "minplaytime", "maxplaytime", "thumbnail"]
+            "gameid",
+            "primaryname",
+            "yearpublished",
+            "gamerank",
+            "usersrated",
+            "bayesaverage",
+            "minplayers",
+            "maxplayers",
+            "playingtime",
+            "minplaytime",
+            "maxplaytime",
+            "thumbnail",
+        ]
 
         return makedict(rows, names)
-
 
     def search_games(self, searchstring, k=None):
         """Method for searching games by a provided searchstring. The method is 
@@ -304,10 +360,19 @@ class Database(object):
         rows = self.conn.fetchall()
 
         names = [
-            "gameid", "primaryname", "yearpublished", 
-            "gamerank", "usersrated", "bayesaverage",
-            "minplayers", "maxplayers", "playingtime",
-            "minplaytime", "maxplaytime", "thumbnail"]
+            "gameid",
+            "primaryname",
+            "yearpublished",
+            "gamerank",
+            "usersrated",
+            "bayesaverage",
+            "minplayers",
+            "maxplayers",
+            "playingtime",
+            "minplaytime",
+            "maxplaytime",
+            "thumbnail",
+        ]
 
         return makedict(rows, names)
 
@@ -323,7 +388,7 @@ if __name__ == "__main__":
 
     # games = model.get_similar_items(50381)
     # print(games)
-    
+
     # games = db.search_games("Catan")
     # for game in games:
     #     print(game["primaryname"])
